@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ဘေထုတ်အသစ်</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bundle.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="app-bar">
+
+    <button class="back-btn"
+        onclick="goTo('index.html')">
+
+        ←
+
+    </button>
+
+    <h2>ဘေထုတ်အသစ်</h2>
+
+</header>
+
+<main class="form-container">
+
+    <div class="form-group">
+
+        <label>ဘေထုတ်ဝယ်ဈေး</label>
+
+        <input
+            type="number"
+            id="totalCost"
+            placeholder="350000">
+
+    </div>
+
+    <div class="form-group">
+
+        <label>အထည်အရေအတွက်</label>
+
+        <input
+            type="number"
+            id="totalItems"
+            placeholder="120">
+
+    </div>
+
+    <div class="form-group">
+
+        <label>မှတ်ချက်</label>
+
+        <textarea
+            id="note"
+            rows="3"
+            placeholder="မှတ်ချက်"></textarea>
+
+    </div>
+
+    <button
+        class="save-btn"
+        onclick="saveBundle()">
+
+        💾 သိမ်းရန်
+
+    </button>
+
+</main>
+
+<script src="js/common.js"></script>
+<script src="js/db.js"></script>
+<script src="js/bundle.js"></script>
+
+</body>
+</html>
