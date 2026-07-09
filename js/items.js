@@ -1,112 +1,108 @@
-/* ==========================================
-   SK Inventory Pro
-   Items Page
-========================================== */
+// ===============================
+// SK Inventory Pro
+// File: js/items.js
+// ===============================
 
-let currentBundle = "";
+const params = new URLSearchParams(window.location.search);
+const bundleId = params.get("bundle");
 
 document.addEventListener("DOMContentLoaded", () => {
+    loadBundle();
 
-    const params = new URLSearchParams(window.location.search);
+    document
+        .getElementById("saveItemBtn")
+        .addEventListener("click", saveItem);
+});
 
-    currentBundle = params.get("bundle");
+function loadBundle() {
 
-    if (!currentBundle) {
-        goTo("index.html");
+    const bundle = getBundle(bundleId);
+
+    if (!bundle) {
+        alert("Bundle not found.");
+        location.href = "index.html";
         return;
     }
 
-    loadItems();
+    document.getElementById("bundleTitle").textContent = bundle.name;
 
-    document
-        .getElementById("searchItem")
-        .addEventListener("input", searchItems);
+    renderItems(bundle);
+}
 
-});
+function renderItems(bundle) {
 
-// =====================
-// Load Items
-// =====================
+    const tbody = document.getElementById("itemTable");
+    tbody.innerHTML = "";
 
-function loadItems() {
+    bundle.items.forEach(item => {
 
-    const items = getBundleItems(currentBundle);
+        const tr = document.createElement("tr");
 
-    document.getElementById("bundleTitle").innerHTML =
-        "ဘေထုတ် " + currentBundle;
+        tr.innerHTML = `
+            <td>${item.code}</td>
+            <td>${item.cost.toLocaleString()}</td>
+            <td>${item.price.toLocaleString()}</td>
+            <td>${item.sold ? "✅ Sold" : "📦 Stock"}</td>
+            <td>
+                <button onclick="toggleItemSold('${item.id}')">
+                    ${item.sold ? "Undo" : "Sold"}
+                </button>
 
-    document.getElementById("bundleSummary").innerHTML =
-        "အထည် " + items.length + " ထည်";
+                <button onclick="removeItem('${item.id}')">
+                    Delete
+                </button>
+            </td>
+        `;
 
-    renderItems(items);
+        tbody.appendChild(tr);
+
+    });
 
 }
 
-// =====================
-// Render
-// =====================
+function saveItem() {
 
-function renderItems(items) {
+    const code = document.getElementById("code").value.trim();
+    const cost = document.getElementById("cost").value;
+    const price = document.getElementById("price").value;
 
-    const list = document.getElementById("itemList");
+    if (!code || !cost || !price) {
+        alert("အချက်အလက်အားလုံး ဖြည့်ပါ။");
+        return;
+    }
 
-    list.innerHTML = "";
+    const ok = addItem(bundleId, {
+        code,
+        cost,
+        price
+    });
 
-    items.forEach(item => {
+    if (!ok) {
+        alert("Item Code ထပ်နေပါသည်။");
+        return;
+    }
 
-        list.innerHTML += `
+    document.getElementById("code").value = "";
+    document.getElementById("cost").value = "";
+    document.getElementById("price").value = "";
 
-<div class="item-card">
+    loadBundle();
+}
 
-<h3>${item.code}</h3>
+function toggleItemSold(itemId) {
+    toggleSold(bundleId, itemId);
+    loadBundle();
+}
 
-<div class="row">
-<label>အရင်း</label>
-<span>${formatMoney(item.cost)}</span>
-</div>
+function removeItem(itemId) {
 
-<div class="row">
+    if (!confirm("ဒီ Item ကို ဖျက်မှာသေချာပါသလား?"))
+        return;
 
-<label>ရောင်းဈေး</label>
+    deleteItem(bundleId, itemId);
 
-<input
-type="number"
-value="${item.salePrice}"
-onchange="changePrice(${item.id},this.value)">
-
-</div>
-
-<div class="row">
-
-<label>အမြတ်</label>
-
-<span>${formatMoney(item.profit)}</span>
-
-</div>
-
-<div class="row">
-
-<label>ရောင်းပြီး</label>
-
-<input
-type="checkbox"
-${item.status ? "checked" : ""}
-onchange="changeStatus(${item.id},this.checked)">
-
-</div>
-
-<div class="row">
-
-<label>မှတ်ချက်</label>
-
-<input
-type="text"
-value="${item.note}"
-onchange="changeNote(${item.id},this.value)">
-
-</div>
-
-</div>
+    loadBundle();
+}</div>
 
 `;
 
