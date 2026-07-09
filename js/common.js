@@ -1,41 +1,35 @@
-// Number Format
-function formatMoney(amount) {
-    return Number(amount || 0).toLocaleString("en-US") + " Ks";
+/* ==========================
+   SK Inventory Pro
+   Common Functions
+========================== */
+
+// ---------- Money Format ----------
+function formatMoney(value) {
+    return Number(value || 0).toLocaleString("en-US") + " Ks";
 }
 
-// Save Data
+// ---------- Save Local ----------
 function saveData(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
 }
 
-// Load Data
+// ---------- Load Local ----------
 function loadData(key) {
-    return JSON.parse(localStorage.getItem(key)) || [];
+    const data = localStorage.getItem(key);
+
+    if (data) {
+        return JSON.parse(data);
+    }
+
+    return [];
 }
 
-// Generate Bundle Code
-function getNextBundleCode() {
-
-    const bundles = loadData("bundles");
-
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    return alphabet[bundles.length] || "Z";
-}
-
-// Generate Item Code
-function generateItemCode(bundleCode, index) {
-
-    return bundleCode +
-        String(index + 1).padStart(3, "0");
-}
-
-// Page Navigation
+// ---------- Page Navigation ----------
 function goTo(page) {
-    window.location.href = page;
+    location.href = page;
 }
 
-// Search Toggle
+// ---------- Search Box ----------
 function toggleSearch() {
 
     const box = document.getElementById("searchBox");
@@ -44,7 +38,43 @@ function toggleSearch() {
 
     box.classList.toggle("hidden");
 
-    const input = document.getElementById("searchInput");
+    if (!box.classList.contains("hidden")) {
 
-    if (input) input.focus();
+        document.getElementById("searchInput").focus();
+
+    }
+
+}
+
+// ---------- Generate Bundle Code ----------
+function nextBundleCode() {
+
+    const bundles = loadData("bundles");
+
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    return letters[bundles.length] || "Z";
+
+}
+
+// ---------- Generate Item Code ----------
+function generateItemCode(bundle, number) {
+
+    return bundle +
+        String(number).padStart(3, "0");
+
+}
+
+// ---------- Today's Date ----------
+function today() {
+
+    return new Date().toISOString().split("T")[0];
+
+}
+
+// ---------- Current Time ----------
+function nowTime() {
+
+    return new Date().toLocaleTimeString();
+
 }
