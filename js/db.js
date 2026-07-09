@@ -124,3 +124,78 @@ function deleteItem(bundleId, itemId) {
 function resetDatabase() {
     localStorage.removeItem(DB_KEY);
 }
+function updateBundle(id, data) {
+
+    const db = loadDB();
+
+    const bundle = db.bundles.find(b => b.id === id);
+
+    if (!bundle) return false;
+
+    Object.assign(bundle, data);
+
+    saveDB(db);
+
+    return true;
+}
+function getItems(bundleId) {
+
+    const bundle = getBundle(bundleId);
+
+    if (!bundle) return [];
+
+    return bundle.items;
+
+}
+function getItem(bundleId, itemId) {
+
+    const bundle = getBundle(bundleId);
+
+    if (!bundle) return null;
+
+    return bundle.items.find(item => item.id === itemId);
+
+}
+function updateItem(bundleId, itemId, data) {
+
+    const db = loadDB();
+
+    const bundle = db.bundles.find(b => b.id === bundleId);
+
+    if (!bundle) return false;
+
+    const item = bundle.items.find(i => i.id === itemId);
+
+    if (!item) return false;
+
+    Object.assign(item, data);
+
+    saveDB(db);
+
+    return true;
+}
+function searchItems(bundleId, keyword) {
+
+    keyword = keyword.toLowerCase();
+
+    return getItems(bundleId).filter(item =>
+        item.code.toLowerCase().includes(keyword)
+    );
+
+}
+function filterItems(bundleId, status) {
+
+    const items = getItems(bundleId);
+
+    if (status === "all")
+        return items;
+
+    if (status === "sold")
+        return items.filter(i => i.sold);
+
+    if (status === "stock")
+        return items.filter(i => !i.sold);
+
+    return items;
+
+}
