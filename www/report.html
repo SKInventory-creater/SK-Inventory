@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>SK Inventory Pro - Report</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<button onclick="location.href='index.html'">
+
+⬅ Dashboard
+
+</button>
+
+<h2>Sales Report</h2>
+
+</header>
+
+<section class="toolbar">
+
+<input
+type="date"
+id="reportDate">
+
+<button id="todayBtn">
+
+Today
+
+</button>
+
+<button id="monthBtn">
+
+This Month
+
+</button>
+
+</section>
+
+<section class="summary">
+
+<div class="card">
+
+<h3>Sold Items</h3>
+
+<span id="soldItems">0</span>
+
+</div>
+
+<div class="card">
+
+<h3>Sales</h3>
+
+<span id="salesTotal">0</span>
+
+</div>
+
+<div class="card">
+
+<h3>Profit</h3>
+
+<span id="profitTotal">0</span>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Report Table -->
+<!-- ========================= -->
+
+<section class="table-container">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Bundle</th>
+                <th>Code</th>
+                <th>Cost</th>
+                <th>Price</th>
+                <th>Sold Date</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="reportTable">
+
+            <tr>
+
+                <td colspan="5">
+
+                    Report မရှိသေးပါ
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</section>
+
+<!-- ========================= -->
+<!-- Actions -->
+<!-- ========================= -->
+
+<section class="toolbar">
+
+    <button id="exportBtn">
+        📤 Export Backup
+    </button>
+
+    <button onclick="window.print()">
+        🖨 Print
+    </button>
+
+</section>
+
+<!-- ========================= -->
+<!-- JavaScript -->
+<!-- ========================= -->
+
+<script src="js/db.js"></script>
+<script src="js/report.js"></script>
+
+</body>
+</html>

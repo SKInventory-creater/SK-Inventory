@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK Inventory Pro</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>📦 SK Inventory Pro</h1>
+    <p>ဘေထုတ်စာရင်း</p>
+</header>
+
+<section class="summary">
+
+    <div class="card">
+        <h3>Bundles</h3>
+        <span id="bundleCount">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Items</h3>
+        <span id="itemCount">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Sold</h3>
+        <span id="soldCount">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Remaining</h3>
+        <span id="remainCount">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Total Cost</h3>
+        <span id="totalCost">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Total Sales</h3>
+        <span id="totalSale">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Profit</h3>
+        <span id="totalProfit">0</span>
+    </div>
+
+</section>
+
+<section class="toolbar">
+
+    <input
+        type="text"
+        id="searchBox"
+        placeholder="🔍 Bundle ရှာပါ">
+
+    <button id="addBundleBtn">
+        ➕ Bundle အသစ်
+    </button>
+
+    <button onclick="location.href='report.html'">
+        📊 Report
+    </button>
+
+    <button onclick="location.href='settings.html'">
+        ⚙️ Settings
+    </button>
+
+</section>
+
+<section>
+
+    <ul id="bundleList"></ul>
+
+</section>
+
+<script src="js/db.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>========================== -->
+
+<script src="js/common.js"></script>
+
+<script src="js/db.js"></script>
+
+<script src="js/dashboard.js"></script>
+
+<script src="firebase.js"></script>
+
+</body>
+</html>

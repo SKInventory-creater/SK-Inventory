@@ -1,6 +1,6 @@
 {
   "appId": "com.skinventory.app",
   "appName": "SK Inventory Pro",
-  "webDir": ".",
+  "webDir": "www",
   "bundledWebRuntime": false
 }

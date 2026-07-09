@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="my">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SK Inventory Pro</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <button onclick="location.href='index.html'">
+        ⬅ Dashboard
+    </button>
+
+    <h2 id="bundleTitle">
+        Bundle
+    </h2>
+
+</header>
+
+<!-- Bundle Summary -->
+
+<section class="summary">
+
+    <div class="card">
+        <h3>Items</h3>
+        <span id="itemCount">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Sold</h3>
+        <span id="soldCount">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Remain</h3>
+        <span id="remainCount">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Total Cost</h3>
+        <span id="totalCost">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Total Sales</h3>
+        <span id="totalSale">0</span>
+    </div>
+
+    <div class="card">
+        <h3>Profit</h3>
+        <span id="totalProfit">0</span>
+    </div>
+
+</section>
+
+<!-- Search -->
+
+<section class="toolbar">
+
+    <input
+        type="text"
+        id="searchBox"
+        placeholder="🔍 Search Item Code">
+
+</section>
+
+<!-- Filter -->
+
+<section class="toolbar">
+
+    <button onclick="changeFilter('all')">
+        All
+    </button>
+
+    <button onclick="changeFilter('stock')">
+        Stock
+    </button>
+
+    <button onclick="changeFilter('sold')">
+        Sold
+    </button>
+
+</section>
+
+    <!-- ========================= -->
+<!-- Add Item Form -->
+<!-- ========================= -->
+
+<section class="item-form">
+
+    <input
+        type="text"
+        id="code"
+        placeholder="Item Code (A001)">
+
+    <input
+        type="number"
+        id="cost"
+        placeholder="Cost Price">
+
+    <input
+        type="number"
+        id="price"
+        placeholder="Selling Price">
+
+    <button id="saveItemBtn">
+        ➕ Add Item
+    </button>
+
+</section>
+
+<!-- ========================= -->
+<!-- Item List -->
+<!-- ========================= -->
+
+<section class="table-container">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Code</th>
+
+                <th>Cost</th>
+
+                <th>Price</th>
+
+                <th>Status</th>
+
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="itemTable">
+
+            <tr>
+
+                <td colspan="5">
+
+                    Item မရှိသေးပါ
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</section>
+
+<!-- ========================= -->
+<!-- JavaScript -->
+<!-- ========================= -->
+
+<script src="js/db.js"></script>
+<script src="js/items.js"></script>
+
+</body>
+</html>
