@@ -3,110 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>အစီရင်ခံစာ</title>
+    <title>Reports - SK Inventory Pro</title>
 
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/report.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<header class="app-bar">
+<header>
+    <h2>📊 Sales Report</h2>
 
-    <button class="back-btn"
-        onclick="goTo('index.html')">←</button>
-
-    <h2>အစီရင်ခံစာ</h2>
-
+    <button onclick="location.href='index.html'">
+        ⬅ Dashboard
+    </button>
 </header>
 
-<main class="report-container">
+<section class="summary">
 
-    <div class="report-card">
-        <h3>💰 ယနေ့</h3>
-
-        <div class="report-row">
-            <span>ရောင်းပြီး</span>
-            <span id="todaySold">0 ထည်</span>
-        </div>
-
-        <div class="report-row">
-            <span>ရောင်းရငွေ</span>
-            <span id="todaySale">0 Ks</span>
-        </div>
-
-        <div class="report-row">
-            <span>အမြတ်</span>
-            <span id="todayProfit">0 Ks</span>
-        </div>
-
+    <div class="card">
+        <h3>Sold Items</h3>
+        <span id="soldItems">0</span>
     </div>
 
-
-    <div class="report-card">
-
-        <h3>📅 ဒီလ</h3>
-
-        <div class="report-row">
-            <span>ရောင်းပြီး</span>
-            <span id="monthSold">0 ထည်</span>
-        </div>
-
-        <div class="report-row">
-            <span>ရောင်းရငွေ</span>
-            <span id="monthSale">0 Ks</span>
-        </div>
-
-        <div class="report-row">
-            <span>အမြတ်</span>
-            <span id="monthProfit">0 Ks</span>
-        </div>
-
+    <div class="card">
+        <h3>Total Sales</h3>
+        <span id="salesAmount">0</span>
     </div>
 
-
-    <div class="report-card">
-
-        <h3>📦 စုစုပေါင်း</h3>
-
-        <div class="report-row">
-            <span>ဘေထုတ်</span>
-            <span id="bundleCount">0</span>
-        </div>
-
-        <div class="report-row">
-            <span>အထည်</span>
-            <span id="itemCount">0</span>
-        </div>
-
-        <div class="report-row">
-            <span>ရောင်းပြီး</span>
-            <span id="soldCount">0</span>
-        </div>
-
-        <div class="report-row">
-            <span>မရောင်းရသေး</span>
-            <span id="remainCount">0</span>
-        </div>
-
+    <div class="card">
+        <h3>Total Cost</h3>
+        <span id="costAmount">0</span>
     </div>
 
+    <div class="card">
+        <h3>Profit</h3>
+        <span id="profitAmount">0</span>
+    </div>
 
-    <div class="report-card">
+</section>
 
-        <h3>💵 ငွေစာရင်း</h3>
+<section>
 
-        <div class="report-row">
-            <span>အရင်း</span>
-            <span id="totalCost">0 Ks</span>
-        </div>
+    <table>
 
-        <div class="report-row">
-            <span>ရောင်းရငွေ</span>
-            <span id="totalSale">0 Ks</span>
-        </div>
+        <thead>
+
+        <tr>
+
+            <th>Date</th>
+            <th>Code</th>
+            <th>Cost</th>
+            <th>Price</th>
+            <th>Profit</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody id="reportTable"></tbody>
+
+    </table>
+
+</section>
+
+<script src="js/db.js"></script>
+<script src="js/report.js"></script>
+
+</body>
+</html>        </div>
 
         <div class="report-row">
             <span>အမြတ်</span>
