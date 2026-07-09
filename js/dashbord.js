@@ -1,173 +1,143 @@
-/* ==========================================
-   SK Inventory Pro
-   Dashboard
-========================================== */
+// ===============================
+// SK Inventory Pro
+// File: js/dashboard.js
+// ===============================
 
 document.addEventListener("DOMContentLoaded", () => {
+    refreshDashboard();
 
-    loadDashboard();
+    document
+        .getElementById("addBundleBtn")
+        .addEventListener("click", addBundle);
 
-    const searchInput = document.getElementById("searchInput");
-
-    if (searchInput) {
-        searchInput.addEventListener("input", searchItem);
-    }
-
+    document
+        .getElementById("searchBox")
+        .addEventListener("input", searchBundles);
 });
 
-// Dashboard Load
-function loadDashboard() {
-
-    updateSummary();
-
-    renderBundles();
-
-}
-
-// Summary
-function updateSummary() {
+function refreshDashboard() {
 
     const bundles = getBundles();
 
-    const items = getItems();
-
-    let totalProfit = 0;
-
-    items.forEach(item => {
-
-        totalProfit += Number(item.profit || 0);
-
-    });
-
-    document.getElementById("summaryText").innerHTML =
-        `ဘေထုတ် ${bundles.length} ခု • အထည် ${items.length} ထည်`;
-
-    document.getElementById("totalProfit").innerHTML =
-        formatMoney(totalProfit);
-
-}
-
-// Bundle Card
-function renderBundles() {
-
-    const list = document.getElementById("bundleList");
-
-    list.innerHTML = "";
-
-    const bundles = getBundles();
+    let itemCount = 0;
+    let soldCount = 0;
+    let totalCost = 0;
+    let totalSale = 0;
 
     bundles.forEach(bundle => {
 
-        const bundleItems = getBundleItems(bundle.code);
+        itemCount += bundle.items.length;
 
-        const sold = bundleItems.filter(i => i.status).length;
+        bundle.items.forEach(item => {
 
-        const remain = bundleItems.length - sold;
+            totalCost += item.cost;
 
-        const profit = bundleItems.reduce((sum, i) => sum + Number(i.profit || 0), 0);
+            if (item.sold) {
+                soldCount++;
+                totalSale += item.price;
+            }
 
-        list.innerHTML += `
-        <div class="bundle-card"
-             onclick="goTo('items.html?bundle=${bundle.code}')">
+        });
 
-            <h3>📦 ဘေထုတ် ${bundle.code}</h3>
+    });
 
-            <div class="bundle-row">
-                <span>အထည်</span>
-                <span>${bundle.totalItems} ထည်</span>
-            </div>
+    document.getElementById("bundleCount").textContent = bundles.length;
+    document.getElementById("itemCount").textContent = itemCount;
+    document.getElementById("soldCount").textContent = soldCount;
+    document.getElementById("remainCount").textContent = itemCount - soldCount;
+    document.getElementById("totalCost").textContent = totalCost.toLocaleString();
+    document.getElementById("totalSale").textContent = totalSale.toLocaleString();
+    document.getElementById("totalProfit").textContent =
+        (totalSale - totalCost).toLocaleString();
 
-            <div class="bundle-row">
-                <span>ရောင်းပြီး</span>
-                <span>${sold}</span>
-            </div>
+    renderBundles(bundles);
+}
 
-            <div class="bundle-row">
-                <span>မရောင်းရသေး</span>
-                <span>${remain}</span>
-            </div>
+function renderBundles(bundles) {
 
-            <div class="bundle-row">
-                <span>အရင်း</span>
-                <span>${formatMoney(bundle.totalCost)}</span>
-            </div>
+    const list = document.getElementById("bundleList");
+    list.innerHTML = "";
 
-            <div class="bundle-row bundle-profit">
-                <span>အမြတ်</span>
-                <span>${formatMoney(profit)}</span>
-            </div>
+    if (bundles.length === 0) {
+        list.innerHTML = `
+            <li class="empty">
+                Bundle မရှိသေးပါ။
+            </li>
+        `;
+        return;
+    }
 
-        </div>`;
+    bundles.forEach(bundle => {
+
+        const li = document.createElement("li");
+
+        li.className = "bundle-card";
+
+        li.innerHTML = `
+            <strong>${bundle.name}</strong><br>
+            Items : ${bundle.items.length}
+            <br><br>
+
+            <button onclick="openBundle('${bundle.id}')">
+                Open
+            </button>
+
+            <button onclick="removeBundle('${bundle.id}')">
+                Delete
+            </button>
+        `;
+
+        list.appendChild(li);
+
     });
 
 }
 
-// Search
-function searchItem() {
+function addBundle() {
 
-    const keyword = document
-        .getElementById("searchInput")
+    const name = prompt("Bundle Name");
+
+    if (!name) return;
+
+    createBundle(name);
+
+    refreshDashboard();
+
+}
+
+function removeBundle(id) {
+
+    if (!confirm("ဒီ Bundle ကိုဖျက်မှာသေချာပါသလား?"))
+        return;
+
+    deleteBundle(id);
+
+    refreshDashboard();
+
+}
+
+function openBundle(id) {
+
+    location.href =
+        "items.html?bundle=" + id;
+
+}
+
+function searchBundles() {
+
+    const keyword =
+        document
+        .getElementById("searchBox")
         .value
-        .trim()
-        .toUpperCase();
+        .toLowerCase();
 
-    if (keyword === "") {
+    const bundles =
+        getBundles().filter(bundle =>
+            bundle.name
+            .toLowerCase()
+            .includes(keyword)
+        );
 
-        renderBundles();
+    renderBundles(bundles);
 
-        return;
-
-    }
-
-    const item = findItem(keyword);
-
-    const list = document.getElementById("bundleList");
-
-    if (!item) {
-
-        list.innerHTML = `
-        <div class="bundle-card">
-
-            <h3>မတွေ့ပါ</h3>
-
-            <p>${keyword} မရှိပါ။</p>
-
-        </div>`;
-
-        return;
-
-    }
-
-    list.innerHTML = `
-    <div class="bundle-card"
-         onclick="goTo('items.html?bundle=${item.bundle}')">
-
-        <h3>${item.code}</h3>
-
-        <div class="bundle-row">
-            <span>ဘေထုတ်</span>
-            <span>${item.bundle}</span>
-        </div>
-
-        <div class="bundle-row">
-            <span>အရင်း</span>
-            <span>${formatMoney(item.cost)}</span>
-        </div>
-
-        <div class="bundle-row">
-            <span>ရောင်းဈေး</span>
-            <span>${formatMoney(item.salePrice)}</span>
-        </div>
-
-        <div class="bundle-row bundle-profit">
-            <span>အမြတ်</span>
-            <span>${formatMoney(item.profit)}</span>
-        </div>
-
-        <div class="bundle-row">
-            <span>အခြေအနေ</span>
-            <span>${item.status ? "✅ ရောင်းပြီး" : "⏳ မရောင်းရသေး"}</span>
-        </div>
-
-    </div>`;
 }
