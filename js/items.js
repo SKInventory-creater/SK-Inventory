@@ -126,4 +126,219 @@ function updateSummary() {
 
 }
 
+// ========================================
+// Add Item
+// ========================================
 
+function addNewItem() {
+
+    const codeInput = document.getElementById("code");
+    const costInput = document.getElementById("cost");
+    const priceInput = document.getElementById("price");
+
+    let code = codeInput.value.trim();
+
+    if (code === "") {
+        code = generateItemCode(bundleId);
+    }
+
+    const cost = Number(costInput.value);
+    const price = Number(priceInput.value);
+
+    if (cost <= 0 || price <= 0) {
+        alert("Cost နှင့် Price ကို မှန်ကန်စွာ ဖြည့်ပါ။");
+        return;
+    }
+
+    const success = addItem(bundleId, {
+        code,
+        cost,
+        price
+    });
+
+    if (!success) {
+        alert("Item Code ရှိပြီးသား ဖြစ်နေပါတယ်။");
+        return;
+    }
+
+    clearForm();
+
+    refreshPage();
+
+}
+
+// ========================================
+// Clear Form
+// ========================================
+
+function clearForm() {
+
+    document.getElementById("code").value = "";
+    document.getElementById("cost").value = "";
+    document.getElementById("price").value = "";
+
+    document.getElementById("cost").focus();
+
+}
+
+// ========================================
+// Toggle Sold
+// ========================================
+
+function toggleItemSold(itemId) {
+
+    toggleSold(bundleId, itemId);
+
+    refreshPage();
+
+}
+
+// ========================================
+// Delete Item
+// ========================================
+
+function removeItem(itemId) {
+
+    const item = getItem(bundleId, itemId);
+
+    if (!item)
+        return;
+
+    if (!confirm(`Delete Item ${item.code} ?`))
+        return;
+
+    deleteItem(bundleId, itemId);
+
+    refreshPage();
+
+}
+
+// ========================================
+// Edit Item
+// ========================================
+
+function editItem(itemId) {
+
+    const item = getItem(bundleId, itemId);
+
+    if (!item)
+        return;
+
+    const code = prompt("Item Code", item.code);
+
+    if (code === null)
+        return;
+
+    const cost = prompt("Cost Price", item.cost);
+
+    if (cost === null)
+        return;
+
+    const price = prompt("Selling Price", item.price);
+
+    if (price === null)
+        return;
+
+    updateItem(bundleId, itemId, {
+
+        code: code.trim(),
+
+        cost: Number(cost),
+
+        price: Number(price)
+
+    });
+
+    refreshPage();
+
+}
+
+// ========================================
+// Render Item List
+// ========================================
+
+function renderItemList() {
+
+    let items = getItems(bundleId);
+
+    // Search
+    if (currentSearch.trim() !== "") {
+        items = searchItems(bundleId, currentSearch);
+    }
+
+    // Filter
+    if (currentFilter !== "all") {
+        items = items.filter(item =>
+            currentFilter === "sold"
+                ? item.sold
+                : !item.sold
+        );
+    }
+
+    const tbody = document.getElementById("itemTable");
+    tbody.innerHTML = "";
+
+    if (items.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    Item မရှိသေးပါ
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    items.forEach(item => {
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+
+        <td>${item.code}</td>
+
+        <td>${item.cost.toLocaleString()}</td>
+
+        <td>${item.price.toLocaleString()}</td>
+
+        <td>
+            ${item.sold ? "✅ Sold" : "📦 Stock"}
+        </td>
+
+        <td>
+
+            <button onclick="editItem('${item.id}')">
+                ✏️
+            </button>
+
+            <button onclick="toggleItemSold('${item.id}')">
+                ${item.sold ? "↩️" : "✔"}
+            </button>
+
+            <button onclick="removeItem('${item.id}')">
+                🗑
+            </button>
+
+        </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+// ========================================
+// Change Filter
+// ========================================
+
+function changeFilter(status) {
+
+    currentFilter = status;
+
+    renderItemList();
+
+}
