@@ -1,112 +1,152 @@
+/* ===========================
+   SK Inventory Pro
+   File: css/style.css
+   =========================== */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
 body{
-    font-family:'Noto Sans Myanmar',sans-serif;
-    background:#f5f7fb;
-    color:#222;
-    padding-bottom:80px;
+    background:#f5f5f5;
+    color:#333;
+    padding:15px;
 }
 
-/* ===== App Bar ===== */
-
-.app-bar{
-    background:#2e7d32;
-    color:#fff;
-    padding:16px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    position:sticky;
-    top:0;
-    z-index:100;
-}
-
-.title-area h1{
-    font-size:22px;
-}
-
-.title-area small{
-    font-size:13px;
-    opacity:.85;
-}
-
-.actions{
-    display:flex;
-    gap:10px;
-}
-
-.actions button{
-    width:42px;
-    height:42px;
-    border:none;
-    border-radius:50%;
-    background:white;
-    font-size:20px;
-    cursor:pointer;
-}
-
-/* ===== Search ===== */
-
-.search-box{
-    padding:12px 16px;
-}
-
-.search-box input{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    font-size:16px;
-    outline:none;
-    background:white;
-}
-
-.hidden{
-    display:none;
-}
-
-/* ===== Profit Card ===== */
-
-.profit-card{
-    margin:16px;
-    background:#2e7d32;
+header{
+    background:#1976d2;
     color:white;
-    border-radius:18px;
-    padding:22px;
-    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    padding:18px;
+    border-radius:10px;
+    margin-bottom:15px;
+    text-align:center;
 }
 
-.profit-card span{
+header h1,
+header h2{
+    margin-bottom:5px;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:15px;
+    text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+
+.card h3{
+    font-size:15px;
+    margin-bottom:8px;
+}
+
+.card span{
+    font-size:22px;
+    font-weight:bold;
+    color:#1976d2;
+}
+
+.toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+input{
+    flex:1;
+    min-width:120px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
     font-size:15px;
 }
 
-.profit-card h2{
-    margin-top:10px;
-    font-size:30px;
+button{
+    background:#1976d2;
+    color:white;
+    border:none;
+    padding:12px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
 }
 
-/* ===== Bundle List ===== */
-
-#bundleList{
-    padding:16px;
+button:hover{
+    background:#1565c0;
 }
 
 .bundle-card{
     background:white;
-    border-radius:16px;
-    padding:18px;
-    margin-bottom:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    list-style:none;
+    margin-bottom:10px;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,.08);
 }
 
-.bundle-card h3{
-    margin-bottom:12px;
-    color:#2e7d32;
+.bundle-card button{
+    margin-right:8px;
+    margin-top:10px;
 }
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+th{
+    background:#1976d2;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+.item-form{
+    display:grid;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.empty{
+    text-align:center;
+    padding:20px;
+    color:#777;
+    list-style:none;
+}
+
+@media(max-width:600px){
+
+    table{
+        font-size:13px;
+    }
+
+    button{
+        width:100%;
+    }
+
+    .toolbar{
+        flex-direction:column;
+    }
+}}
 
 .bundle-row{
     display:flex;
