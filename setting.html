@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings - SK Inventory Pro</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<header>
+    <h2>⚙️ Settings</h2>
+
+    <button onclick="location.href='index.html'">
+        ⬅ Dashboard
+    </button>
+</header>
+
+<div class="card">
+
+    <h3>Backup & Restore</h3>
+
+    <button id="backupBtn">
+        💾 Backup Data
+    </button>
+
+    <br><br>
+
+    <input
+        type="file"
+        id="restoreFile"
+        accept=".json">
+
+    <br><br>
+
+    <button id="restoreBtn">
+        ♻ Restore Data
+    </button>
+
+    <hr>
+
+    <button id="resetBtn">
+        🗑 Reset Database
+    </button>
+
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/backup.js"></script>
+
+</body>
+</html>
