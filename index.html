@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Inventory</title>
+    <title>SK Inventory Pro</title>
+
+    <meta name="theme-color" content="#2E7D32">
 
     <link rel="manifest" href="manifest.json">
+
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- App Bar -->
+<!-- =========================
+        APP BAR
+========================== -->
+
 <header class="app-bar">
 
-    <div class="title-area">
+    <div class="title">
 
-        <h1>SK Inventory</h1>
+        <h1>📦 SK Inventory</h1>
 
         <small id="summaryText">
             ဘေထုတ် 0 ခု • အထည် 0 ထည်
@@ -26,75 +33,130 @@
 
     </div>
 
-    <div class="actions">
+    <div class="app-actions">
 
-        <button id="searchBtn">
+        <button
+            id="searchBtn"
+            class="icon-btn"
+            onclick="toggleSearch()"
+            title="ရှာရန်">
+
             🔍
+
         </button>
 
-        <button id="addBundleBtn">
+        <button
+            id="addBundleBtn"
+            class="icon-btn"
+            onclick="goTo('bundle.html')"
+            title="ဘေထုတ်အသစ်">
+
             ➕
+
         </button>
 
     </div>
 
 </header>
 
+<!-- =========================
+        SEARCH
+========================== -->
 
-<!-- Search -->
-<div id="searchBox" class="search-box hidden">
+<section
+id="searchBox"
+class="search-box hidden">
 
     <input
         type="text"
         id="searchInput"
         placeholder="A001 ဖြင့်ရှာရန်">
 
-</div>
+</section>
 
-
-<!-- Profit Card -->
+<!-- =========================
+      TOTAL PROFIT CARD
+========================== -->
 
 <section class="profit-card">
 
-    <span>စုစုပေါင်းအမြတ်</span>
+    <p>စုစုပေါင်းအမြတ်</p>
 
-    <h2 id="totalProfit">0 ကျပ်</h2>
+    <h2 id="totalProfit">
+        0 Ks
+    </h2>
 
 </section>
 
-
-<!-- Bundle List -->
+<!-- =========================
+      Bundle List
+========================== -->
 
 <main id="bundleList">
 
+    <!-- JavaScript ကနေ Card တွေထည့်မယ် -->
+
 </main>
 
-
-<!-- Bottom Navigation -->
+<!-- =========================
+Bottom Navigation
+========================== -->
 
 <nav class="bottom-nav">
 
-    <button class="active">
-        📦
-        <span>ဘေထုတ်များ</span>
+    <button
+        class="active"
+        onclick="goTo('index.html')">
+
+        <div>🏠</div>
+
+        <span>ပင်မ</span>
+
     </button>
 
-    <button>
-        📊
+    <button
+        onclick="goTo('report.html')">
+
+        <div>📊</div>
+
         <span>အစီရင်ခံစာ</span>
+
     </button>
 
-    <button>
-        ⚙️
+    <button
+        onclick="goTo('settings.html')">
+
+        <div>⚙️</div>
+
         <span>ဆက်တင်</span>
+
     </button>
 
 </nav>
 
+<!-- =========================
+Floating Button
+========================== -->
 
+<button
+class="fab"
+onclick="goTo('bundle.html')">
+
+➕
+
+</button>
+
+<!-- =========================
+Scripts
+========================== -->
+
+<script src="js/common.js"></script>
 
 <script src="js/db.js"></script>
+
 <script src="js/dashboard.js"></script>
+
+<script src="firebase.js"></script>
 
 </body>
 </html>
