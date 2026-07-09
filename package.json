@@ -1,0 +1,16 @@
+{
+  "name": "sk-inventory-pro",
+  "version": "1.0.0",
+  "description": "SK Inventory Pro",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo \"No build step required\""
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.4.2",
+    "@capacitor/android": "^7.4.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.2"
+  }
+}
