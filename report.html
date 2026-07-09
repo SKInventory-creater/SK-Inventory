@@ -1,87 +1,140 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports - SK Inventory Pro</title>
 
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>SK Inventory Pro - Report</title>
+
+<link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
 
 <header>
-    <h2>📊 Sales Report</h2>
 
-    <button onclick="location.href='index.html'">
-        ⬅ Dashboard
-    </button>
+<button onclick="location.href='index.html'">
+
+⬅ Dashboard
+
+</button>
+
+<h2>Sales Report</h2>
+
 </header>
 
-<section class="summary">
+<section class="toolbar">
 
-    <div class="card">
-        <h3>Sold Items</h3>
-        <span id="soldItems">0</span>
-    </div>
+<input
+type="date"
+id="reportDate">
 
-    <div class="card">
-        <h3>Total Sales</h3>
-        <span id="salesAmount">0</span>
-    </div>
+<button id="todayBtn">
 
-    <div class="card">
-        <h3>Total Cost</h3>
-        <span id="costAmount">0</span>
-    </div>
+Today
 
-    <div class="card">
-        <h3>Profit</h3>
-        <span id="profitAmount">0</span>
-    </div>
+</button>
+
+<button id="monthBtn">
+
+This Month
+
+</button>
 
 </section>
 
-<section>
+<section class="summary">
+
+<div class="card">
+
+<h3>Sold Items</h3>
+
+<span id="soldItems">0</span>
+
+</div>
+
+<div class="card">
+
+<h3>Sales</h3>
+
+<span id="salesTotal">0</span>
+
+</div>
+
+<div class="card">
+
+<h3>Profit</h3>
+
+<span id="profitTotal">0</span>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Report Table -->
+<!-- ========================= -->
+
+<section class="table-container">
 
     <table>
 
         <thead>
 
-        <tr>
+            <tr>
 
-            <th>Date</th>
-            <th>Code</th>
-            <th>Cost</th>
-            <th>Price</th>
-            <th>Profit</th>
+                <th>Bundle</th>
+                <th>Code</th>
+                <th>Cost</th>
+                <th>Price</th>
+                <th>Sold Date</th>
 
-        </tr>
+            </tr>
 
         </thead>
 
-        <tbody id="reportTable"></tbody>
+        <tbody id="reportTable">
+
+            <tr>
+
+                <td colspan="5">
+
+                    Report မရှိသေးပါ
+
+                </td>
+
+            </tr>
+
+        </tbody>
 
     </table>
 
 </section>
 
-<script src="js/db.js"></script>
-<script src="js/report.js"></script>
+<!-- ========================= -->
+<!-- Actions -->
+<!-- ========================= -->
 
-</body>
-</html>        </div>
+<section class="toolbar">
 
-        <div class="report-row">
-            <span>အမြတ်</span>
-            <span id="totalProfit">0 Ks</span>
-        </div>
+    <button id="exportBtn">
+        📤 Export Backup
+    </button>
 
-    </div>
+    <button onclick="window.print()">
+        🖨 Print
+    </button>
 
-</main>
+</section>
 
-<script src="js/common.js"></script>
+<!-- ========================= -->
+<!-- JavaScript -->
+<!-- ========================= -->
+
 <script src="js/db.js"></script>
 <script src="js/report.js"></script>
 
