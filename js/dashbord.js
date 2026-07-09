@@ -1,56 +1,42 @@
-// ===============================
+// ========================================
 // SK Inventory Pro
 // File: js/dashboard.js
-// ===============================
+// Version: 1.0
+// ========================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", initDashboard);
+
+function initDashboard() {
+    bindEvents();
     refreshDashboard();
+}
+
+function bindEvents() {
 
     document
         .getElementById("addBundleBtn")
-        .addEventListener("click", addBundle);
+        .addEventListener("click", createNewBundle);
 
     document
         .getElementById("searchBox")
-        .addEventListener("input", searchBundles);
-});
+        .addEventListener("input", filterBundleList);
+
+}
 
 function refreshDashboard() {
 
-    const bundles = getBundles();
+    const stats = getDashboardStats();
 
-    let itemCount = 0;
-    let soldCount = 0;
-    let totalCost = 0;
-    let totalSale = 0;
+    document.getElementById("bundleCount").textContent = stats.bundleCount;
+    document.getElementById("itemCount").textContent = stats.itemCount;
+    document.getElementById("soldCount").textContent = stats.soldCount;
+    document.getElementById("remainCount").textContent = stats.remainCount;
+    document.getElementById("totalCost").textContent = stats.totalCost.toLocaleString();
+    document.getElementById("totalSale").textContent = stats.totalSale.toLocaleString();
+    document.getElementById("totalProfit").textContent = stats.totalProfit.toLocaleString();
 
-    bundles.forEach(bundle => {
+    renderBundles(getBundles());
 
-        itemCount += bundle.items.length;
-
-        bundle.items.forEach(item => {
-
-            totalCost += item.cost;
-
-            if (item.sold) {
-                soldCount++;
-                totalSale += item.price;
-            }
-
-        });
-
-    });
-
-    document.getElementById("bundleCount").textContent = bundles.length;
-    document.getElementById("itemCount").textContent = itemCount;
-    document.getElementById("soldCount").textContent = soldCount;
-    document.getElementById("remainCount").textContent = itemCount - soldCount;
-    document.getElementById("totalCost").textContent = totalCost.toLocaleString();
-    document.getElementById("totalSale").textContent = totalSale.toLocaleString();
-    document.getElementById("totalProfit").textContent =
-        (totalSale - totalCost).toLocaleString();
-
-    renderBundles(bundles);
 }
 
 function renderBundles(bundles) {
@@ -59,27 +45,39 @@ function renderBundles(bundles) {
     list.innerHTML = "";
 
     if (bundles.length === 0) {
+
         list.innerHTML = `
             <li class="empty">
-                Bundle မရှိသေးပါ။
+                Bundle မရှိသေးပါ
             </li>
         `;
+
         return;
     }
 
     bundles.forEach(bundle => {
+
+        const stat = getBundleStats(bundle.id);
 
         const li = document.createElement("li");
 
         li.className = "bundle-card";
 
         li.innerHTML = `
-            <strong>${bundle.name}</strong><br>
-            Items : ${bundle.items.length}
-            <br><br>
+            <h3>${bundle.name}</h3>
+
+            <p>Items : ${stat.itemCount}</p>
+
+            <p>Sold : ${stat.soldCount}</p>
+
+            <p>Remain : ${stat.remainCount}</p>
 
             <button onclick="openBundle('${bundle.id}')">
                 Open
+            </button>
+
+            <button onclick="renameBundle('${bundle.id}')">
+                Rename
             </button>
 
             <button onclick="removeBundle('${bundle.id}')">
@@ -93,11 +91,18 @@ function renderBundles(bundles) {
 
 }
 
-function addBundle() {
+function createNewBundle() {
 
     const name = prompt("Bundle Name");
 
     if (!name) return;
+
+    if (bundleExists(name)) {
+
+        alert("Bundle Name ရှိပြီးသားဖြစ်ပါတယ်။");
+
+        return;
+    }
 
     createBundle(name);
 
@@ -105,9 +110,28 @@ function addBundle() {
 
 }
 
+function renameBundle(id) {
+
+    const bundle = getBundle(id);
+
+    const name = prompt(
+        "New Bundle Name",
+        bundle.name
+    );
+
+    if (!name) return;
+
+    updateBundle(id, {
+        name: name.trim()
+    });
+
+    refreshDashboard();
+
+}
+
 function removeBundle(id) {
 
-    if (!confirm("ဒီ Bundle ကိုဖျက်မှာသေချာပါသလား?"))
+    if (!confirm("ဒီ Bundle ကို ဖျက်မှာ သေချာပါသလား?"))
         return;
 
     deleteBundle(id);
@@ -123,20 +147,18 @@ function openBundle(id) {
 
 }
 
-function searchBundles() {
+function filterBundleList() {
 
     const keyword =
         document
-        .getElementById("searchBox")
-        .value
-        .toLowerCase();
+            .getElementById("searchBox")
+            .value
+            .trim()
+            .toLowerCase();
 
-    const bundles =
-        getBundles().filter(bundle =>
-            bundle.name
-            .toLowerCase()
-            .includes(keyword)
-        );
+    const bundles = getBundles().filter(bundle =>
+        bundle.name.toLowerCase().includes(keyword)
+    );
 
     renderBundles(bundles);
 
