@@ -1,152 +1,126 @@
-/* ==========================
-   SK Inventory Pro
-   Database Engine
-========================== */
+// ===============================
+// SK Inventory Pro Database
+// File: js/db.js
+// ===============================
 
-const BUNDLE_KEY = "bundles";
-const ITEM_KEY = "items";
+const DB_KEY = "sk_inventory_pro";
 
-// =========================
-// Bundle
-// =========================
+// Load database
+function loadDB() {
+    const data = localStorage.getItem(DB_KEY);
 
-// Bundle အားလုံးယူရန်
-function getBundles() {
-    return loadData(BUNDLE_KEY);
+    if (!data) {
+        return {
+            bundles: [],
+            settings: {
+                currency: "MMK"
+            }
+        };
+    }
+
+    return JSON.parse(data);
 }
 
-// Bundle သိမ်းရန်
-function saveBundles(data) {
-    saveData(BUNDLE_KEY, data);
+// Save database
+function saveDB(db) {
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
 }
 
-// Bundle အသစ်ဖန်တီးရန်
-function createBundle(totalCost, totalItems, note = "") {
-
-    const bundles = getBundles();
-
-    const code = nextBundleCode();
-
-    const costPerItem = Math.round(totalCost / totalItems);
+// Create bundle
+function createBundle(name) {
+    const db = loadDB();
 
     const bundle = {
-
-        id: Date.now(),
-
-        code,
-
-        totalCost,
-
-        totalItems,
-
-        costPerItem,
-
-        note,
-
-        createdDate: today()
-
+        id: Date.now().toString(),
+        name: name,
+        createdAt: new Date().toISOString(),
+        items: []
     };
 
-    bundles.push(bundle);
-
-    saveBundles(bundles);
-
-    createItems(bundle);
+    db.bundles.push(bundle);
+    saveDB(db);
 
     return bundle;
-
 }
 
-// =========================
-// Items
-// =========================
-
-// Item အားလုံးယူရန်
-function getItems() {
-    return loadData(ITEM_KEY);
+// Get all bundles
+function getBundles() {
+    return loadDB().bundles;
 }
 
-// Item သိမ်းရန်
-function saveItems(data) {
-    saveData(ITEM_KEY, data);
+// Get bundle by id
+function getBundle(id) {
+    return loadDB().bundles.find(b => b.id === id);
 }
 
-// Bundle ထဲက Item တွေဖန်တီးရန်
-function createItems(bundle) {
+// Delete bundle
+function deleteBundle(id) {
+    const db = loadDB();
+    db.bundles = db.bundles.filter(b => b.id !== id);
+    saveDB(db);
+}
 
-    const items = getItems();
+// Add item
+function addItem(bundleId, item) {
+    const db = loadDB();
 
-    for (let i = 1; i <= bundle.totalItems; i++) {
+    const bundle = db.bundles.find(b => b.id === bundleId);
 
-        items.push({
+    if (!bundle) return false;
 
-            id: Date.now() + i,
-
-            bundle: bundle.code,
-
-            code: generateItemCode(bundle.code, i),
-
-            cost: bundle.costPerItem,
-
-            salePrice: 0,
-
-            profit: 0,
-
-            status: false,
-
-            image: "",
-
-            note: "",
-
-            soldDate: ""
-
-        });
-
+    // Duplicate code check
+    if (bundle.items.some(i => i.code === item.code)) {
+        return false;
     }
 
-    saveItems(items);
+    bundle.items.push({
+        id: Date.now().toString(),
+        code: item.code,
+        cost: Number(item.cost),
+        price: Number(item.price),
+        sold: false,
+        soldDate: null
+    });
 
+    saveDB(db);
+
+    return true;
 }
 
-// Code နဲ့ Item ရှာရန်
-function findItem(code) {
+// Update sold status
+function toggleSold(bundleId, itemId) {
 
-    return getItems().find(item => item.code === code);
+    const db = loadDB();
 
+    const bundle = db.bundles.find(b => b.id === bundleId);
+
+    if (!bundle) return;
+
+    const item = bundle.items.find(i => i.id === itemId);
+
+    if (!item) return;
+
+    item.sold = !item.sold;
+    item.soldDate = item.sold ? new Date().toISOString() : null;
+
+    saveDB(db);
 }
 
-// Bundle အလိုက် Item ယူရန်
-function getBundleItems(bundleCode) {
+// Delete item
+function deleteItem(bundleId, itemId) {
 
-    return getItems().filter(item => item.bundle === bundleCode);
+    const db = loadDB();
 
+    const bundle = db.bundles.find(b => b.id === bundleId);
+
+    if (!bundle) return;
+
+    bundle.items = bundle.items.filter(i => i.id !== itemId);
+
+    saveDB(db);
 }
 
-// Item Update
-function updateItem(updatedItem) {
-
-    const items = getItems();
-
-    const index = items.findIndex(i => i.id === updatedItem.id);
-
-    if (index !== -1) {
-
-        updatedItem.profit =
-            updatedItem.salePrice - updatedItem.cost;
-
-        items[index] = updatedItem;
-
-        saveItems(items);
-
-    }
-
-}
-
-// Item Delete
-function deleteItem(id) {
-
-    const items = getItems().filter(i => i.id !== id);
-
-    saveItems(items);
-
+// Reset database
+function resetDatabase() {
+    localStorage.removeItem(DB_KEY);
 }
